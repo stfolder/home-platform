@@ -2,7 +2,7 @@
 
 ## Status
 
-Planned capability. Hermes AI is not part of the initial Fedora development-server installation and must be introduced only after the platform has secure remote access, Docker, secrets handling, backups, and basic monitoring.
+Planned early platform capability. Hermes AI is not part of the initial Fedora installation, but it should be introduced after secure remote access, Docker, secrets handling, backups, and basic monitoring are working. It does not need to wait for Kubernetes.
 
 ## Purpose
 
@@ -14,7 +14,7 @@ Initial goals:
 - Support low-risk personal automation and platform-assistance workflows.
 - Allow cloud-hosted model APIs initially.
 - Allow later experiments with local models on the NVIDIA RTX 2080 Super.
-- Provide a controlled path from Docker Compose on the Fedora development server to Kubernetes when the service becomes stable.
+- Provide a controlled path from Docker Compose on Forge to Kubernetes when the service becomes stable.
 
 Hermes AI is distinct from development-time coding assistants such as OpenCode and Codex. OpenCode and Codex run interactively inside project repositories. Hermes AI is a persistent platform service with memory, tools, scheduling, and potentially long-lived credentials.
 
@@ -47,6 +47,7 @@ Future placement:
 
 - Move Hermes AI to Kubernetes only after its configuration, storage, security controls, and operational behavior are stable.
 - Keep its data, memory, and tool permissions portable enough to migrate without redesigning the service.
+- Do not make Kubernetes a prerequisite for the first useful Hermes workflows.
 
 ## Model Strategy
 
@@ -175,7 +176,7 @@ Maintenance requirements:
 
 ## Roadmap Placement
 
-Hermes AI is part of the AI Platform phase.
+Hermes AI is introduced before Terraform and Kubernetes because it can provide useful automation while remaining isolated and non-critical.
 
 Recommended sequence:
 
@@ -183,13 +184,16 @@ Recommended sequence:
 2. Ansible configuration management.
 3. Finance App development workflow.
 4. CI/CD to Raspberry Pi.
-5. Terraform and AWS learning.
-6. Kubernetes deployment platform.
-7. Observability.
-8. AI platform foundation.
-9. Hermes AI in an isolated Docker Compose runtime.
-10. Optional migration of Hermes AI to Kubernetes.
-11. Optional local-model integration.
+5. Backup and basic monitoring.
+6. Hermes AI in an isolated Docker Compose runtime on Forge.
+7. Terraform and AWS learning.
+8. Kubernetes deployment platform.
+9. Keycloak identity platform with PostgreSQL on Synology.
+10. Broader observability and platform services.
+11. Optional migration of Hermes AI to Kubernetes.
+12. Optional local-model integration.
+
+The active cross-platform sequence is maintained in `docs/roadmap.md`.
 
 ## Acceptance Criteria
 
