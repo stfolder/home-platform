@@ -8,6 +8,7 @@ Current architecture and delivery documents:
 
 - [Active implementation roadmap](docs/roadmap.md)
 - [Project delivery and Kanban system](docs/project-management.md)
+- [Sprint 1: Forge Online](docs/sprints/sprint-001.md)
 - [Raspberry Pi deployment architecture](docs/current-deployment.md)
 - [Hermes AI platform architecture](docs/hermes-ai.md)
 - [Internal identity and access architecture](docs/identity-access.md)
@@ -15,4 +16,4 @@ Current architecture and delivery documents:
 - [ADR-0007: Isolate autonomous AI agents](docs/adr/0007-isolate-autonomous-ai-agents.md)
 - [ADR-0008: Use Keycloak for internal identity and access management](docs/adr/0008-use-keycloak-for-internal-identity.md)
 
-Execution is tracked through GitHub Issues. The initial active story is issue #9 under the Platform Foundation epic.
+Execution is tracked through GitHub Issues and the Project Forge board. Sprint 1 commits issues #9, #10, and #11 for a total of 10 story points.
