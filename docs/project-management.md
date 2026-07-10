@@ -29,7 +29,7 @@ Use these statuses:
 5. `Review`: implementation is complete and awaiting validation, documentation review, or acceptance.
 6. `Done`: acceptance criteria and the Definition of Done are satisfied; the GitHub issue is closed.
 
-Until a GitHub Project board is created, status is recorded in each issue body. When the board exists, its Status field becomes authoritative and the body status may be removed.
+The GitHub Project board Status field is authoritative. Issue bodies may include sprint metadata and requirements, but must not be used as a substitute for moving cards on the board.
 
 ## Prioritization
 
@@ -49,6 +49,30 @@ Use Fibonacci story points: `1, 2, 3, 5, 8, 13`.
 
 Points describe relative complexity, uncertainty, and validation effort. They are not hour estimates. A story estimated above 8 points should normally be split before work begins.
 
+Working calibration:
+
+- `1`: very small change or verification.
+- `2`: one focused session or low-risk preparation story.
+- `3`: roughly two focused sessions or moderate validation effort.
+- `5`: several sessions with meaningful implementation or uncertainty.
+- `8`: substantial work that should be reviewed carefully for splitting.
+- `13`: too large for normal sprint commitment; groom again.
+
+## Sprint cadence and capacity
+
+Project Forge uses three-week sprints inside the continuous-flow Kanban system.
+
+The initial planning assumption is:
+
+- Four to five focused sessions per week.
+- Approximately five to seven engineering hours per week.
+- Approximately fifteen to twenty engineering hours per sprint.
+- Initial sprint capacity: 10 story points.
+
+Capacity is empirical, not aspirational. After each sprint, completed points, interruptions, and friction are reviewed before changing the next sprint commitment.
+
+A stretch story may be pulled only when all committed stories are complete or clearly on track and the work-in-progress limit remains respected.
+
 ## Work-in-progress limits
 
 - One primary story in progress.
@@ -59,11 +83,15 @@ Points describe relative complexity, uncertainty, and validation effort. They ar
 
 A story is Ready when:
 
-- The outcome is clear.
+- The outcome and value are clear.
 - Acceptance criteria are testable.
 - Dependencies are known.
+- Documentation deliverables are explicitly defined where applicable.
 - Destructive actions and rollback expectations are documented.
 - Required hardware, credentials, and access are available.
+- An estimate is assigned.
+- The Definition of Done is clear.
+- No major unanswered technical question blocks execution.
 - The estimate is 8 points or less, or the reason for keeping it larger is documented.
 
 ## Definition of Done
@@ -81,41 +109,46 @@ A story is Done only when:
 
 ## Planning rhythm
 
-Project Forge uses continuous-flow Kanban with lightweight sprint-style rituals:
+Project Forge uses continuous-flow Kanban with lightweight sprint rituals:
 
-- Planning: choose the next Ready story and confirm its acceptance criteria.
+- Sprint planning: set one outcome-oriented sprint goal and commit only Ready or dependency-ordered stories within capacity.
 - Check-in: report progress, blockers, discoveries, and scope changes.
-- Review: demonstrate or verify the completed outcome.
+- Grooming: clarify future stories before promoting them to Ready.
+- Review: demonstrate or verify the completed sprint outcome.
 - Retrospective: record what worked, what caused friction, and what should change.
 
 No ceremony exists merely to imitate a larger organization.
 
-## Initial active queue
+## Sprint 1 baseline
 
-The first active epic is `Platform Foundation`.
+Sprint 1 is documented in [`docs/sprints/sprint-001.md`](sprints/sprint-001.md).
 
-The initial Ready story is:
+- Length: three weeks.
+- Capacity: 10 story points.
+- Committed stories: #9, #10, and #11.
+- Stretch candidate: #12.
+- First executable story: #9.
 
-- Issue #9: Inventory Forge hardware and installation prerequisites.
-
-Stories #10 through #15 remain in dependency order in the Backlog until their prerequisites are complete.
+Stories may be committed to a sprint while remaining in Backlog until their dependencies are satisfied. Only dependency-clear, fully groomed work belongs in Ready.
 
 ## GitHub Project board
 
-Recommended board name: `Project Forge`.
+Board name: `Project Forge`.
 
 Recommended fields:
 
-- Status
-- Epic
-- Priority
-- Story Points
-- Roadmap Phase
+- Status.
+- Epic.
+- Priority.
+- Story Points.
+- Sprint.
+- Roadmap Phase.
 
 Recommended views:
 
-- Current Work: Ready, In Progress, Review.
+- Current Sprint: filtered to the active sprint and grouped by Status.
+- Current Work: Ready, In Progress, and Review.
 - Roadmap: grouped by Epic and ordered by phase.
 - Icebox: deferred capabilities such as later identity, local-model, and multi-node expansion work.
 
-GitHub Issues remain the source of truth for requirements and acceptance criteria. The Project board is a view over that work, not a separate backlog.
+GitHub Issues remain the source of truth for requirements and acceptance criteria. The Project board is the authoritative view for workflow status and sprint assignment.
