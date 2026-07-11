@@ -38,8 +38,8 @@ Non-responsibilities:
 | CPU            | Intel Core i5-9600K      | Known from platform specification | Verify in firmware or Fedora after installation.                     |
 | RAM            | 32 GB                    | Known from platform specification | Verify in firmware before install.                                   |
 | GPU            | NVIDIA RTX 2080 Super    | Optional                          | Installation decision recorded below.                                |
-| Network        | Wired Ethernet preferred | Pending verification              | Verify link light and router visibility before install.              |
-| Power          | UPS-backed               | Pending verification              | Verify Forge and pfSense are on UPS-backed power.                    |
+| Network        | Wired Ethernet preferred | Verified                          | Wired Ethernet connectivity is available for installation.           |
+| Power          | UPS-backed               | Verified                          | Forge and pfSense are on UPS-backed power.                           |
 | Target OS      | Fedora Server, x86_64    | Planned                           | Use official Fedora Server media.                                    |
 
 ## Disk Inventory and Disposition
@@ -75,12 +75,12 @@ Required evidence:
 
 | Setting          | Required state                                        | Current state        | Notes                                                                        |
 | ---------------- | ----------------------------------------------------- | -------------------- | ---------------------------------------------------------------------------- |
-| Boot mode        | UEFI                                                  | Pending verification | Legacy/CSM boot should not be used for the Fedora install.                   |
-| VT-x             | Enabled                                               | Pending verification | Required for virtualization and local development workloads.                 |
-| VT-d             | Enabled when supported                                | Pending verification | Useful for device isolation and future advanced virtualization.              |
-| Secure Boot      | Decision required                                     | Pending decision     | See Secure Boot decision below.                                              |
-| Boot order       | USB first for installation, target disk after install | Pending verification | Confirm before and after installation.                                       |
-| BIOS/UEFI update | Evaluate before install                               | Pending evaluation   | Update only if needed for stability, storage, network, or GPU compatibility. |
+| Boot mode        | UEFI                                                  | Confirmed            | Legacy/CSM boot should not be used for the Fedora install.                   |
+| VT-x             | Enabled                                               | Confirmed enabled    | Required for virtualization and local development workloads.                 |
+| VT-d             | Enabled when supported                                | Not supported        | Not available on this hardware or firmware.                                  |
+| Secure Boot      | Disabled                                              | Decision recorded    | Secure Boot will remain disabled for the Fedora installation.                |
+| Boot order       | USB first for installation, target disk after install | Verified             | Confirm again after installation so the Fedora target disk boots first.      |
+| BIOS/UEFI update | Evaluate before install                               | Evaluated            | Update only if needed for stability, storage, network, or GPU compatibility. |
 
 ## Installation Decisions
 
@@ -97,13 +97,13 @@ Rationale:
 
 ### Secure Boot
 
-Decision: **pending firmware review**.
+Decision: **disabled**.
 
-Default recommendation:
+Rationale:
 
-- Leave Secure Boot enabled if Fedora Server installation and boot work normally.
-- Disable Secure Boot only if it blocks installation, boot, or later approved NVIDIA driver work.
-- Record the final setting in this document before starting installation.
+- Simplifies the initial Fedora Server installation.
+- Avoids Secure Boot friction during future approved NVIDIA driver work.
+- The system remains protected by VPN-only administrative access, SSH hardening, firewall controls, and physical network boundaries.
 
 ### Installation Media
 
@@ -134,9 +134,9 @@ Planned media:
 ### Firmware
 
 - [x] UEFI mode is confirmed.
-- [ ] VT-x is enabled.
-- [ ] VT-d is enabled where supported.
-- [ ] Secure Boot decision is documented.
+- [x] VT-x is enabled.
+- [x] VT-d support is evaluated.
+- [x] Secure Boot decision is documented.
 - [x] Boot order is verified.
 - [x] BIOS or UEFI update requirement is evaluated.
 
