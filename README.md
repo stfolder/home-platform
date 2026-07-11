@@ -9,6 +9,8 @@ Current architecture and delivery documents:
 - [Active implementation roadmap](docs/roadmap.md)
 - [Project delivery and Kanban system](docs/project-management.md)
 - [Sprint 1: Forge Online](docs/sprints/sprint-001.md)
+- [Forge hardware preparation](docs/hardware/forge.md)
+- [Fedora Server installation runbook](docs/runbooks/fedora-installation.md)
 - [Raspberry Pi deployment architecture](docs/current-deployment.md)
 - [Hermes AI platform architecture](docs/hermes-ai.md)
 - [Internal identity and access architecture](docs/identity-access.md)
