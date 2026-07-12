@@ -51,6 +51,7 @@ Complete this table before booting Fedora installation media.
 | Samsung 970 EVO Plus | 512Gb | TBD             | Windows                           | wipe        | Identify from firmware and installer before formatting. Reliable and fast                                                                |
 | ---                  |  ---: | ---             | --------------------------------- | ---         | ---                                                                                                                                      |
 | Intel 660p           |   1Tb | TBD             | Don't remember. Nothing important | wipe        | Identify from firmware and installer before formatting. Glitched under windows, worked normally under linux. May be needs in diagnostics |
+| HDD                  |   2Tb | TBD             | Empty                             | reuse later | Available for future storage after Fedora Server is installed and stable. Do not select as the Fedora installation target.               |
 
 Allowed dispositions:
 
