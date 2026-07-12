@@ -107,6 +107,43 @@ A story is Done only when:
 - Changes are committed to the correct repository.
 - Follow-up work is captured as issues rather than hidden in notes.
 
+## Documentation policy
+
+Project Forge distinguishes between authored documentation and generated documentation.
+
+### Authored documentation
+
+Humans write and review information that requires judgment or intent, including:
+
+- Architecture and boundaries.
+- ADRs and rationale.
+- Runbooks and recovery procedures.
+- Roadmaps, sprint plans, and acceptance criteria.
+- Hardware dispositions and operational decisions.
+
+### Generated documentation
+
+The running system should produce facts that it already knows whenever practical, including:
+
+- Hardware models and serial numbers.
+- Filesystem UUIDs and PARTUUIDs.
+- Network interfaces and MAC addresses.
+- Firmware and BIOS versions.
+- PCI and USB inventories.
+- SMART attributes and other machine-readable state.
+
+Do not manually transcribe volatile identifiers from a local console merely to remove a `TBD`. When secure remote access or automation is not yet available, record the field as intentionally deferred and link the follow-up issue.
+
+Generated documentation must:
+
+- Be reproducible from a documented command, script, or playbook.
+- Produce reviewable and reasonably stable diffs.
+- Exclude credentials, tokens, private keys, secrets, and unnecessary personal data.
+- Be reviewed before commit, especially when it includes serial numbers or MAC addresses.
+- Complement authored documentation rather than replacing decisions and rationale.
+
+Issue #17 tracks automatic Forge system-inventory generation after secure SSH access is established by #12.
+
 ## Planning rhythm
 
 Project Forge uses continuous-flow Kanban with lightweight sprint rituals:
