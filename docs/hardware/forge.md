@@ -9,9 +9,26 @@ Related stories:
 - [#9 Prepare Forge for Fedora installation](https://github.com/stfolder/home-platform/issues/9)
 - [#10 Install and validate Fedora Server on Forge](https://github.com/stfolder/home-platform/issues/10)
 
-Open follow-up:
+Open follow-ups:
 
 - [#16 Investigate Forge 2 TB HDD SMART sector warnings](https://github.com/stfolder/home-platform/issues/16)
+- [#17 Generate Forge system inventory from the running host](https://github.com/stfolder/home-platform/issues/17)
+
+## Inventory Data Collection Policy
+
+This document records stable architecture, hardware roles, safety boundaries, and disposition decisions.
+
+Detailed machine-readable identifiers are intentionally deferred until secure SSH access is available and the data can be collected directly from Forge. Do not manually copy long identifiers from the local console merely to replace placeholders.
+
+Issue #17 will collect and render approved facts such as:
+
+- Hardware models and serial numbers.
+- Filesystem UUIDs and PARTUUIDs.
+- Network interfaces and MAC addresses.
+- BIOS, firmware, PCI, and USB inventory.
+- SMART summaries and storage-health facts.
+
+Until #17 is complete, fields marked `deferred to generated inventory` are expected and do not indicate incomplete story #10 documentation. Decisions and safety-relevant facts remain authored and reviewed here.
 
 ## Purpose and Role
 
@@ -44,18 +61,18 @@ Non-responsibilities:
 | RAM            | 32 GB                    | Confirmed                         | Confirmed during installation validation.                            |
 | GPU            | NVIDIA RTX 2080 Super    | Optional                          | Installation decision recorded below.                                |
 | Network        | Wired Ethernet           | Verified                          | Wired Ethernet is set up for the installed Fedora system.            |
-| Power          | UPS-backed               | Verified                          | Forge and pfSense are on UPS-backed power.                           |
-| Target OS      | Fedora Server 44, x86_64 | Installed                         | Fedora Server installed on the Samsung 970 EVO Plus.                 |
+| Power          | UPS-backed               | Verified                          | Forge and pfSense are on UPS-backed power.                            |
+| Target OS      | Fedora Server 44, x86_64 | Installed                         | Fedora Server installed on the Samsung 970 EVO Plus.                  |
 
 ## Disk Inventory and Disposition
 
 Disk inventory after Fedora installation:
 
-| Disk identifier      | Size   | Model or serial | Current contents                  | Disposition              | Notes |
-| -------------------- | -----: | --------------- | --------------------------------- | ------------------------ | ----- |
-| Samsung 970 EVO Plus | 512 GB | TBD             | Fedora Server 44                  | installed OS             | Fedora Server target disk. Reliable and fast. |
-| Intel 660p           | 1 TB   | TBD             | Unknown; no important data expected | reuse later after checks | Separate SSD from the failing 2 TB HDD. It previously behaved inconsistently under Windows but normally under Linux. Verify identity and health before formatting or assigning platform storage. |
-| HDD                  | 2 TB   | TBD             | Empty                             | investigate before use   | Identified as `/dev/sda`; SMART overall health reports `PASSED`, but journal reports 664 pending and 664 offline uncorrectable sectors. Investigation is tracked in #16. |
+| Disk identifier      | Size   | Model or serial                 | Current contents                    | Disposition              | Notes |
+| -------------------- | -----: | ------------------------------- | ----------------------------------- | ------------------------ | ----- |
+| Samsung 970 EVO Plus | 512 GB | deferred to generated inventory | Fedora Server 44                    | installed OS             | Fedora Server target disk. Reliable and fast. |
+| Intel 660p           | 1 TB   | deferred to generated inventory | Unknown; no important data expected | reuse later after checks | Separate SSD from the failing 2 TB HDD. It previously behaved inconsistently under Windows but normally under Linux. Verify identity and health before formatting or assigning platform storage. |
+| HDD                  | 2 TB   | deferred to generated inventory | Empty                               | investigate before use   | Identified as `/dev/sda` during story #10; SMART overall health reports `PASSED`, but journal reports 664 pending and 664 offline uncorrectable sectors. Investigation is tracked in #16. |
 
 The Intel 660p and the 2 TB HDD are distinct devices. Issue #16 applies only to the 2 TB HDD that produced the critical SMART and journal warnings.
 
@@ -69,7 +86,7 @@ Fedora Server is installed on the Samsung 970 EVO Plus using GPT partitioning an
 | `nvme?n1p2` | `/boot` | Boot partition |
 | `nvme?n1p3` | `/` | Root filesystem |
 
-These names record the observed partition pattern, not a stable disk identity. Confirm current device names with `lsblk`; use model, serial number, filesystem UUID, or PARTUUID for durable identification when those values are captured.
+These names record the observed partition pattern, not a stable disk identity. Current device names, filesystem UUIDs, and PARTUUIDs will be collected directly from Forge by #17 after SSH access is available. Use model, serial number, UUID, or PARTUUID for durable identification once generated inventory exists.
 
 Allowed dispositions:
 
@@ -92,17 +109,18 @@ Validation evidence:
 - Disk size and model matched the selected target.
 - Fedora boots from the selected target disk without installation media.
 - Non-target disks were not selected for the Fedora installation.
+- Exact serial number and stable partition identifiers are deferred to generated inventory in #17.
 
 ## Firmware Configuration
 
 | Setting          | Required state                                        | Current state        | Notes                                                                        |
 | ---------------- | ----------------------------------------------------- | -------------------- | ---------------------------------------------------------------------------- |
-| Boot mode        | UEFI                                                  | Confirmed            | Legacy/CSM boot should not be used for the Fedora install.                   |
-| VT-x             | Enabled                                               | Confirmed enabled    | Required for virtualization and local development workloads.                 |
-| VT-d             | Enabled when supported                                | Confirmed enabled    | Useful for device isolation and future advanced virtualization.              |
-| Secure Boot      | Disabled                                              | Decision recorded    | Secure Boot remains disabled for the initial Fedora installation.            |
-| Boot order       | USB first for installation, target disk after install | Verified             | Fedora target disk is the normal boot device after installation.             |
-| BIOS/UEFI update | Evaluate before install                               | Evaluated            | Update only if needed for stability, storage, network, or GPU compatibility. |
+| Boot mode        | UEFI                                                  | Confirmed            | Legacy/CSM boot should not be used for the Fedora install.                    |
+| VT-x             | Enabled                                               | Confirmed enabled    | Required for virtualization and local development workloads.                  |
+| VT-d             | Enabled when supported                                | Confirmed enabled    | Useful for device isolation and future advanced virtualization.               |
+| Secure Boot      | Disabled                                              | Decision recorded    | Secure Boot remains disabled for the initial Fedora installation.             |
+| Boot order       | USB first for installation, target disk after install | Verified             | Fedora target disk is the normal boot device after installation.              |
+| BIOS/UEFI update | Evaluate before install                               | Evaluated            | Exact firmware version is deferred to generated inventory in #17.             |
 
 ## Installation Decisions
 
@@ -190,6 +208,7 @@ Media used:
 - [x] firewalld is running.
 - [x] Intel 660p is preserved for later reuse after checks.
 - [x] Non-target 2 TB HDD SMART and journal warning is documented for follow-up in #16.
+- [x] Detailed volatile identifiers are intentionally deferred to generated inventory in #17.
 
 ## Recovery and Rollback Summary
 
@@ -215,3 +234,4 @@ Rollback approach:
 | 2026-07-10 | Initial Forge hardware preparation document for story #9. | Codex |
 | 2026-07-11 | Recorded Fedora Server installation validation state for story #10. | Codex |
 | 2026-07-11 | Clarified that Intel 660p is a reusable SSD separate from the failing 2 TB HDD; corrected disk dispositions and security wording. | Nyx |
+| 2026-07-11 | Deferred volatile identifiers to SSH-based generated inventory and linked story #17. | Nyx |
