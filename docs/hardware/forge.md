@@ -1,12 +1,17 @@
-# Forge Hardware Preparation
+# Forge Hardware Inventory
 
 ## Status
 
-Preparation status: in progress.
+Installed state: Fedora Server installed and validated for story #10.
 
-Story: [#9 Prepare Forge for Fedora installation](https://github.com/stfolder/home-platform/issues/9)
+Related stories:
 
-Forge must not be installed until every item in the installation readiness checklist is complete and the target installation disk is explicitly identified.
+- [#9 Prepare Forge for Fedora installation](https://github.com/stfolder/home-platform/issues/9)
+- [#10 Install and validate Fedora Server on Forge](https://github.com/stfolder/home-platform/issues/10)
+
+Open follow-up:
+
+- [#16 Investigate Forge 2 TB HDD SMART sector warnings](https://github.com/stfolder/home-platform/issues/16)
 
 ## Purpose and Role
 
@@ -33,44 +38,58 @@ Non-responsibilities:
 
 | Component      | Current value            | Verification status               | Notes                                                                |
 | -------------- | ------------------------ | --------------------------------- | -------------------------------------------------------------------- |
-| Hostname       | `forge`                  | Planned                           | Canonical hostname from architecture.                                |
+| Hostname       | `fedora`                 | Temporary                         | Temporary hostname for #10; stable identity is owned by #11.         |
 | Local DNS name | `forge.home.arpa`        | Planned                           | To be configured after Fedora installation and LAN addressing story. |
-| CPU            | Intel Core i7-9700K      | Confirmed                         | Verify again in Fedora after installation.                           |
-| RAM            | 32 GB                    | Known from platform specification | Verify in firmware before install.                                   |
+| CPU            | Intel Core i7-9700K      | Confirmed                         | Confirmed during installation validation.                            |
+| RAM            | 32 GB                    | Confirmed                         | Confirmed during installation validation.                            |
 | GPU            | NVIDIA RTX 2080 Super    | Optional                          | Installation decision recorded below.                                |
-| Network        | Wired Ethernet preferred | Verified                          | Wired Ethernet connectivity is available for installation.           |
+| Network        | Wired Ethernet           | Verified                          | Wired Ethernet is set up for the installed Fedora system.            |
 | Power          | UPS-backed               | Verified                          | Forge and pfSense are on UPS-backed power.                           |
-| Target OS      | Fedora Server, x86_64    | Planned                           | Use official Fedora Server media.                                    |
+| Target OS      | Fedora Server 44, x86_64 | Installed                         | Fedora Server installed on the Samsung 970 EVO Plus.                 |
 
 ## Disk Inventory and Disposition
 
-Complete this table before booting Fedora installation media.
+Disk inventory after Fedora installation:
 
 | Disk identifier      |  Size | Model or serial | Current contents                  | Disposition | Notes                                                                                                                                    |
 | -------------------- | ----: | --------------- | --------------------------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| Samsung 970 EVO Plus | 512Gb | TBD             | Windows                           | wipe        | Identify from firmware and installer before formatting. Reliable and fast                                                                |
+| Samsung 970 EVO Plus | 512Gb | TBD             | Fedora Server 44                  | installed OS | Fedora Server target disk. Reliable and fast.                                                                                            |
 | ---                  |  ---: | ---             | --------------------------------- | ---         | ---                                                                                                                                      |
 | Intel 660p           |   1Tb | TBD             | Don't remember. Nothing important | wipe        | Identify from firmware and installer before formatting. Glitched under windows, worked normally under linux. May be needs in diagnostics |
-| HDD                  |   2Tb | TBD             | Empty                             | reuse later | Available for future storage after Fedora Server is installed and stable. Do not select as the Fedora installation target.               |
+| HDD                  |   2Tb | TBD             | Empty                             | investigate before use | Identified as `/dev/sda`; SMART overall health reports `PASSED`, but journal reports 664 pending and 664 offline uncorrectable sectors. Investigate before using for platform storage. |
+
+## Installed Partition Layout
+
+Fedora Server is installed on the Samsung 970 EVO Plus using GPT partitioning and UEFI boot.
+
+| Partition | Mount point | Purpose |
+|---|---|---|
+| `nvme?n1p1` | `/boot/efi` | EFI system partition |
+| `nvme?n1p2` | `/boot` | Boot partition |
+| `nvme?n1p3` | `/` | Root filesystem |
+
+The exact NVMe controller number can vary across boots and should be confirmed with `lsblk` when needed.
 
 Allowed dispositions:
 
 - `keep`: do not format, overwrite, repartition, or select during installation.
 - `wipe`: approved Fedora installation target; all existing contents may be destroyed.
 - `reuse later`: preserve for now; may be repurposed after Fedora is stable and backups are confirmed.
+- `investigate before use`: do not use for platform storage until the documented concern is resolved.
 
 ## Target Installation Disk
 
 Target installation disk: **Samsung 970 EVO Plus**
 
-The Fedora installer must not proceed past disk selection until this field is updated with the exact disk identifier, size, and model or serial number.
+Fedora Server has been installed on this disk.
 
-Required evidence:
+Validation evidence:
 
 - Firmware storage list reviewed.
 - Fedora installer disk list reviewed.
-- Disk size and model or serial match this document.
-- All non-target disks are either disconnected or explicitly marked `keep`.
+- Disk size and model matched the selected target.
+- Fedora boots from the selected target disk without installation media.
+- Non-target disks were not selected for the Fedora installation.
 
 ## Firmware Configuration
 
@@ -152,6 +171,21 @@ Planned media:
 - [x] Recovery or rollback approach is documented.
 - [x] No uncertainty remains regarding which disk will be formatted.
 
+## Installed-State Checklist
+
+- [x] Fedora Server is installed on the Samsung 970 EVO Plus.
+- [x] GPT partitioning and UEFI boot are confirmed.
+- [x] Installation media is removed.
+- [x] Forge boots without user intervention.
+- [x] Non-root administrative user exists.
+- [x] Administrative user can run `sudo`.
+- [x] Temporary hostname is assigned for #10.
+- [x] Timezone and locale are configured.
+- [x] Wired Ethernet is set up.
+- [x] SELinux is enabled and enforcing.
+- [x] firewalld is running.
+- [x] Non-target 2 TB HDD SMART/journal warning is documented for follow-up.
+
 ## Recovery and Rollback Summary
 
 Before installation:
@@ -174,3 +208,4 @@ Rollback approach:
 | Date       | Change                                                    | Author |
 | ---------- | --------------------------------------------------------- | ------ |
 | 2026-07-10 | Initial Forge hardware preparation document for story #9. | Codex  |
+| 2026-07-11 | Recorded Fedora Server installation validation state for story #10. | Codex |

@@ -2,11 +2,18 @@
 
 ## Status
 
-Runbook status: draft, pending physical pre-install verification.
+Runbook status: Fedora Server installed and validated for story #10.
 
-Story: [#9 Prepare Forge for Fedora installation](https://github.com/stfolder/home-platform/issues/9)
+Related stories:
 
-This runbook prepares Forge for Fedora Server installation. Do not begin destructive installation steps until the readiness gates in this document and `docs/hardware/forge.md` are complete.
+- [#9 Prepare Forge for Fedora installation](https://github.com/stfolder/home-platform/issues/9)
+- [#10 Install and validate Fedora Server on Forge](https://github.com/stfolder/home-platform/issues/10)
+
+Follow-up:
+
+- [#16 Investigate Forge 2 TB HDD SMART sector warnings](https://github.com/stfolder/home-platform/issues/16)
+
+This runbook records the Fedora Server installation and validation results for Forge. The original pre-install instructions are retained as historical installation procedure.
 
 ## References
 
@@ -22,9 +29,9 @@ Install Fedora Server on Forge as the home engineering platform development work
 Target:
 
 - Architecture: x86_64.
-- Hostname: `forge`.
+- Temporary hostname: `fedora`.
 - Local DNS name after later LAN configuration: `forge.home.arpa`.
-- Installation target disk: must be copied from `docs/hardware/forge.md` after physical verification.
+- Installation target disk: Samsung 970 EVO Plus.
 
 Out of scope for this runbook:
 
@@ -244,16 +251,55 @@ sudo reboot
 
 ## Post-Install Validation
 
+### Installed System Summary
+
+| Item | Value |
+|---|---|
+| Fedora edition | Fedora Server |
+| Fedora version | Fedora 44 |
+| Installation date | 2026-07-11 |
+| Temporary hostname | `fedora` |
+| Target disk | Samsung 970 EVO Plus |
+| Boot mode | UEFI |
+| Partitioning | GPT |
+| Root filesystem | XFS |
+| SELinux | Enforcing |
+| Firewall | firewalld running |
+
+### Partition Layout
+
+| Partition | Mount point | Notes |
+|---|---|---|
+| `nvme?n1p1` | `/boot/efi` | EFI system partition |
+| `nvme?n1p2` | `/boot` | Boot partition |
+| `nvme?n1p3` | `/` | Root filesystem |
+
+The exact NVMe controller number can vary across boots and should be confirmed with `lsblk` when needed.
+
 After reboot:
 
 ```bash
 hostnamectl
 cat /etc/fedora-release
+timedatectl
+localectl
+sudo -v
+getenforce
+sudo firewall-cmd --state
 ip addr
 ip route
 ping -c 4 1.1.1.1
 ping -c 4 fedoraproject.org
+sudo dnf upgrade --refresh
+sudo reboot
+```
+
+After the controlled reboot:
+
+```bash
+hostnamectl
 systemctl --failed
+journalctl -p crit -b --no-pager
 lsblk -o NAME,SIZE,MODEL,SERIAL,FSTYPE,MOUNTPOINTS
 free -h
 lscpu
@@ -262,7 +308,7 @@ lscpu
 Validation passes when:
 
 - Forge boots from the Fedora target disk.
-- Hostname is `forge`.
+- Temporary hostname is assigned for #10; stable hostname and LAN identity are handled by #11.
 - Wired Ethernet has link and an IP address.
 - Default route exists.
 - DNS resolution works.
@@ -271,6 +317,40 @@ Validation passes when:
 - Non-target disks were not formatted.
 - CPU and RAM match expected inventory.
 
+### Validation Results
+
+Date: 2026-07-11
+Validator: Sergey
+Validation source: local console on Forge
+
+Validation results captured from the local console on Forge.
+
+| Check                        | Result | Expected or observed value / notes                                                                                                                                                                                     |
+| ---------------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Fedora version               | PASS   | Fedora release 44 (Forty Four)                                                                                                                                                                                         |
+| Hostname                     | PASS   | fedora (temp name)                                                                                                                                                                                                     |
+| Timezone                     | PASS   | `America/Los_Angeles`                                                                                                                                                                                                  |
+| Locale                       | PASS   | System Locale: LANG=en_US.UTF-8, VC Keymap: ru                                                                                                                                                                         |
+| Installation disk            | PASS   | Fedora installed on Samsung 970 EVO Plus.                                                                                                                                                                              |
+| Partitioning                 | PASS   | GPT partitioning with UEFI boot.                                                                                                                                                                                       |
+| Filesystems                  | PASS   | xfs. Reason: Default Fedora Server installation. Chosen for maturity, enterprise adoption, Docker/Kubernetes compatibility, and reproducibility over snapshot-oriented workflows.                                      |
+| Installation media removed   | PASS   | yes.                                                                                                                                                                                                                   |
+| Boot without intervention    | PASS   | Forge boots from internal Fedora target disk without user intervention.                                                                                                                                                |
+| Non-root administrative user | PASS   | Non-root admin user exists; username intentionally not documented if preferred.                                                                                                                                        |
+| sudo access                  | PASS   | Administrative user can run `sudo`.                                                                                                                                                                                    |
+| Wired Ethernet               | PASS   | Wired interface is set up and has link and an IP address.                                                                                                                                                              |
+| Default route                | PASS   | Default route exists.                                                                                                                                                                                                  |
+| Internet connectivity        | PASS   | `ping -c 4 1.1.1.1` succeeds.                                                                                                                                                                                          |
+| DNS resolution               | PASS   | `ping -c 4 fedoraproject.org` succeeds.                                                                                                                                                                                |
+| Package updates              | PASS   | `sudo dnf upgrade --refresh` completed successfully.                                                                                                                                                                   |
+| Controlled reboot            | PASS   | Reboot completed successfully after updates.                                                                                                                                                                           |
+| Failed systemd units         | PASS   | `systemctl --failed` shows no unresolved failed units.                                                                                                                                                                 |
+| Critical journal errors      | PASS with caveat | Non-target 2 TB HDD `/dev/sda` reports 664 currently unreadable pending sectors and 664 offline uncorrectable sectors. SMART overall health reports `PASSED`; investigation is tracked in #16 before using this disk for platform storage. |
+| SELinux                      | PASS   | `getenforce` returns `Enforcing`.                                                                                                                                                                                      |
+| Firewall                     | PASS   | `sudo firewall-cmd --state` returns `running`.                                                                                                                                                                         |
+| CPU                          | PASS   | Intel Core i7-9700K.                                                                                                                                                                                                   |
+| RAM                          | PASS   | 32 GB.                                                                                                                                                                                                                 |
+
 ## Known Caveats
 
 - Disk names such as `/dev/sda` and `/dev/nvme0n1` can change between boots. Prefer disk size, model, serial number, and physical port information when identifying the installation target.
@@ -278,6 +358,7 @@ Validation passes when:
 - Secure Boot should not be changed casually. Record the decision and reason.
 - NVIDIA GPU driver work is deferred and should not be mixed into the base OS installation.
 - Network interface names may not be predictable before installation. Stable LAN addressing is handled in story #11.
+- The non-target 2 TB HDD is identified as `/dev/sda` and reports 664 pending sectors plus 664 offline uncorrectable sectors in the critical journal. SMART overall health reports `PASSED`; investigation is tracked in #16 before using this disk for platform storage.
 
 ## Recovery Notes
 
@@ -310,12 +391,12 @@ If hardware compatibility issues appear:
 3. Retry with minimal hardware.
 4. Defer optional GPU installation until the base server is stable.
 
-## Evidence to Capture
+## Evidence Captured
 
-Before story #9 can move to review, capture the following in `docs/hardware/forge.md`:
+The following evidence was captured for #9 and #10:
 
-- Target installation disk identifier, size, model, and serial when available.
-- Disposition of every detected disk.
+- Target installation disk identifier and disposition.
+- Disposition of detected disks.
 - Wired Ethernet verification.
 - UPS verification.
 - UEFI mode verification.
@@ -325,3 +406,6 @@ Before story #9 can move to review, capture the following in `docs/hardware/forg
 - BIOS or UEFI update decision.
 - Fedora media creation and checksum verification.
 - Backup and recovery confirmation.
+- Fedora Server installation result.
+- Post-install validation result.
+- 2 TB HDD SMART/journal caveat tracked in #16.
