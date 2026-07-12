@@ -35,7 +35,7 @@ Non-responsibilities:
 | -------------- | ------------------------ | --------------------------------- | -------------------------------------------------------------------- |
 | Hostname       | `forge`                  | Planned                           | Canonical hostname from architecture.                                |
 | Local DNS name | `forge.home.arpa`        | Planned                           | To be configured after Fedora installation and LAN addressing story. |
-| CPU            | Intel Core i5-9600K      | Known from platform specification | Verify in firmware or Fedora after installation.                     |
+| CPU            | Intel Core i7-9700K      | Confirmed                         | Verify again in Fedora after installation.                           |
 | RAM            | 32 GB                    | Known from platform specification | Verify in firmware before install.                                   |
 | GPU            | NVIDIA RTX 2080 Super    | Optional                          | Installation decision recorded below.                                |
 | Network        | Wired Ethernet preferred | Verified                          | Wired Ethernet connectivity is available for installation.           |
@@ -78,7 +78,7 @@ Required evidence:
 | ---------------- | ----------------------------------------------------- | -------------------- | ---------------------------------------------------------------------------- |
 | Boot mode        | UEFI                                                  | Confirmed            | Legacy/CSM boot should not be used for the Fedora install.                   |
 | VT-x             | Enabled                                               | Confirmed enabled    | Required for virtualization and local development workloads.                 |
-| VT-d             | Enabled when supported                                | Not supported        | Not available on this hardware or firmware.                                  |
+| VT-d             | Enabled when supported                                | Confirmed enabled    | Useful for device isolation and future advanced virtualization.              |
 | Secure Boot      | Disabled                                              | Decision recorded    | Secure Boot will remain disabled for the Fedora installation.                |
 | Boot order       | USB first for installation, target disk after install | Verified             | Confirm again after installation so the Fedora target disk boots first.      |
 | BIOS/UEFI update | Evaluate before install                               | Evaluated            | Update only if needed for stability, storage, network, or GPU compatibility. |
@@ -136,7 +136,7 @@ Planned media:
 
 - [x] UEFI mode is confirmed.
 - [x] VT-x is enabled.
-- [x] VT-d support is evaluated.
+- [x] VT-d is enabled.
 - [x] Secure Boot decision is documented.
 - [x] Boot order is verified.
 - [x] BIOS or UEFI update requirement is evaluated.

@@ -319,7 +319,7 @@ Before story #9 can move to review, capture the following in `docs/hardware/forg
 - Wired Ethernet verification.
 - UPS verification.
 - UEFI mode verification.
-- VT-x verification and VT-d support evaluation.
+- VT-x and VT-d verification.
 - Secure Boot decision.
 - Boot order verification.
 - BIOS or UEFI update decision.
