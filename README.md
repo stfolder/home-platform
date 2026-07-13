@@ -8,6 +8,7 @@ Current architecture and delivery documents:
 
 - [Active implementation roadmap](docs/roadmap.md)
 - [Project delivery and Kanban system](docs/project-management.md)
+- [Sprint 2: Forge Workbench](docs/sprints/sprint-002.md)
 - [Sprint 1: Forge Online](docs/sprints/sprint-001.md)
 - [Forge hardware preparation](docs/hardware/forge.md)
 - [Fedora Server installation runbook](docs/runbooks/fedora-installation.md)
@@ -21,4 +22,4 @@ Current architecture and delivery documents:
 - [ADR-0007: Isolate autonomous AI agents](docs/adr/0007-isolate-autonomous-ai-agents.md)
 - [ADR-0008: Use Keycloak for internal identity and access management](docs/adr/0008-use-keycloak-for-internal-identity.md)
 
-Execution is tracked through GitHub Issues and the Project Forge board. Sprint 1 commits issues #9, #10, and #11 for a total of 10 story points.
+Execution is tracked through GitHub Issues and the Project Forge board. Sprint 2 commits issues #13 and #14 for 8 story points, with #15 as a 3-point stretch candidate.
