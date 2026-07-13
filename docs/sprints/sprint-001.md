@@ -14,7 +14,7 @@ Prepare and bring Forge online as a documented Fedora development server with a 
 
 ## Capacity
 
-10 story points.
+Original planned capacity: **10 story points**.
 
 Planning assumptions:
 
@@ -25,7 +25,7 @@ Planning assumptions:
 
 This is the first measured sprint. Future capacity must be adjusted from observed velocity rather than optimism.
 
-## Committed stories
+## Original commitment
 
 | Issue | Story | Points | Initial board status | Dependency |
 |---|---|---:|---|---|
@@ -33,19 +33,26 @@ This is the first measured sprint. Future capacity must be adjusted from observe
 | #10 | Install Fedora Server on Forge | 5 | Backlog | #9 |
 | #11 | Configure stable hostname and LAN addressing | 3 | Backlog | #10 |
 
-Total commitment: **10 story points**.
+Original commitment: **10 story points**.
 
-## Stretch candidate
+## Pulled stretch work
 
-Issue #12, Establish secure SSH access from the MacBook, may be pulled only after the committed stories are complete or clearly on track. It is not part of the 10-point commitment.
+| Issue | Story | Points | Pull status | Dependency |
+|---|---|---:|---|---|
+| #12 | Establish secure SSH access from the MacBook | 3 | Ready | #11 |
+
+Issue #12 was pulled into Sprint 1 after the original committed stories were completed or clearly on track. It remains recorded separately from the original commitment so the sprint review can distinguish planned capacity from additional delivered work.
+
+Current sprint scope: **13 story points**, consisting of **10 committed points** plus **3 pulled stretch points**.
 
 ## Execution order
 
-1. Start #9.
-2. Move #9 to Review when all preparation evidence and required documentation are committed.
-3. After #9 is accepted and closed, promote #10 to Ready.
-4. After #10 is accepted and closed, promote #11 to Ready.
+1. Complete and accept #9.
+2. Complete and accept #10.
+3. Complete and accept #11.
+4. Pull #12 into the sprint as stretch work.
 5. Preserve the one-primary-story work-in-progress limit.
+6. Move #12 to Review only after key authentication, negative authentication tests, reboot validation, and documentation are complete.
 
 ## Sprint success criteria
 
@@ -59,6 +66,13 @@ Sprint 1 succeeds when:
 - Required hardware, installation, and network documentation is committed.
 - No undocumented destructive action or unresolved recovery gap remains.
 
+Pulled stretch success for #12 additionally requires:
+
+- `ssh forge` succeeds from the MacBook using a dedicated key.
+- Root SSH login and password-only authentication fail.
+- Secure access survives SSH reload and Forge reboot.
+- SSH setup, recovery, and key revocation are documented.
+
 ## Review evidence
 
 The sprint review should include:
@@ -67,7 +81,9 @@ The sprint review should include:
 - Successful reboot evidence.
 - LAN reachability by hostname.
 - Links to documentation produced by the committed stories.
+- For #12, successful key-based login plus failed password-only and root-login tests.
 - Deviations, follow-up issues, and any ADR changes.
+- A clear distinction between the original 10-point commitment and the 3 points pulled afterward.
 
 ## Retrospective questions
 
@@ -75,4 +91,6 @@ The sprint review should include:
 - How many focused sessions were actually available?
 - Which work produced unexpected friction?
 - Did the stories contain enough documentation guidance?
-- Should the next sprint retain, reduce, or increase capacity?
+- Was pulling #12 healthy use of available capacity, or did it create avoidable pressure?
+- Should pulled stretch points count separately when calculating future planning velocity?
+- Should the next sprint retain, reduce, or increase planned capacity?
