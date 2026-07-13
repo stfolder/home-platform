@@ -384,8 +384,9 @@ Example client configuration:
 ```text
 Host forge
     HostName forge.home.arpa
-    User sergey
+    User serge
     IdentityFile ~/.ssh/id_ed25519_forge
+    IdentitiesOnly yes
 ```
 
 Private keys must never be stored in any platform repository.
@@ -811,4 +812,3 @@ The following earlier decisions are superseded by this canonical architecture:
 - Terraform is not used for operating system configuration.
 - Ansible is not used for cloud infrastructure ownership.
 - Kubernetes, vector databases, and local LLM services are not part of the initial development-server setup.
-

@@ -259,7 +259,7 @@ sudo reboot
 | Fedora version | Fedora 44 |
 | Installation date | 2026-07-11 |
 | Current hostname | `forge` |
-| Target disk | Samsung 970 EVO Plus, serial `S4P2NF0M604252A` |
+| Target disk | Samsung 970 EVO Plus; exact serial retained privately |
 | Boot mode | UEFI |
 | Partitioning | GPT |
 | Root filesystem | XFS on LVM logical volume `fedora-root` |
@@ -268,15 +268,15 @@ sudo reboot
 
 ### Partition Layout
 
-| Device | Size | Type | Filesystem | Mount point | UUID | PARTUUID |
-|---|---:|---|---|---|---|---|
-| `/dev/nvme1n1` | 465.8 GB | GPT disk | n/a | n/a | n/a | n/a |
-| `/dev/nvme1n1p1` | 600 MB | EFI System | vfat | `/boot/efi` | `6135-9E17` | `17bb94a4-c674-433d-b9af-ce9ba4bf1321` |
-| `/dev/nvme1n1p2` | 2 GB | Linux filesystem | xfs | `/boot` | `ebb82fe3-08f0-462a-8149-2508809db012` | `23831933-1f13-46d6-a7d9-4005b863432c` |
-| `/dev/nvme1n1p3` | 463.2 GB | Linux LVM | LVM2_member | LVM physical volume | `PFWKNG-abdj-P0br-xC3r-dHWv-yWC9-dGyStZ` | `44d1d82c-f457-4ccd-82fc-185609bd87aa` |
-| `/dev/mapper/fedora-root` | 15 GB | LVM logical volume | xfs | `/` | `a6baaddb-7edf-42a6-8406-e355ccc61467` | n/a |
+| Device | Size | Type | Filesystem | Mount point | Stable identifiers |
+|---|---:|---|---|---|---|
+| `/dev/nvme1n1` | 465.8 GB | GPT disk | n/a | n/a | Exact disk serial retained privately. |
+| `/dev/nvme1n1p1` | 600 MB | EFI System | vfat | `/boot/efi` | UUID and PARTUUID retained privately. |
+| `/dev/nvme1n1p2` | 2 GB | Linux filesystem | xfs | `/boot` | UUID and PARTUUID retained privately. |
+| `/dev/nvme1n1p3` | 463.2 GB | Linux LVM | LVM2_member | LVM physical volume | UUID and PARTUUID retained privately. |
+| `/dev/mapper/fedora-root` | 15 GB | LVM logical volume | xfs | `/` | UUID retained privately. |
 
-Linux device names can change across hardware changes or firmware events. Prefer model, serial number, filesystem UUID, or PARTUUID for durable identification.
+Linux device names can change across hardware changes or firmware events. Prefer the private generated inventory when durable serial, filesystem UUID, or PARTUUID identification is required.
 
 After reboot:
 

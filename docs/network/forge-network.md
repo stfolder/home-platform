@@ -8,6 +8,7 @@ Related stories:
 
 - [#10 Install and validate Fedora Server on Forge](https://github.com/stfolder/home-platform/issues/10)
 - [#11 Establish Forge's permanent network identity](https://github.com/stfolder/home-platform/issues/11)
+- [#12 Establish secure SSH access from the MacBook](https://github.com/stfolder/home-platform/issues/12)
 - [#17 Generate Forge system inventory from the running host](https://github.com/stfolder/home-platform/issues/17)
 
 This document records the human-reviewed network identity for Forge. Unique machine identifiers, such as full MAC addresses and generated hardware identifiers, are intentionally excluded from this public repository. Exact values belong in private or host-local inventory produced by #17.
@@ -82,7 +83,7 @@ Run from at least one additional LAN device:
 ping forge.home.arpa
 ```
 
-SSH validation for story #11 only proves hostname resolution reaches the host. SSH key hardening and remote-access security are owned by #12.
+SSH validation for story #11 only proves hostname resolution reaches the host. SSH key hardening and remote-access security are documented in [Forge SSH Access Runbook](../runbooks/ssh-access.md).
 
 ## Validation Results
 
@@ -138,3 +139,4 @@ sudo nmcli networking on
 - Forge uses DHCP reservation rather than a static Fedora IP configuration.
 - Stable network identity does not imply public exposure.
 - Remote access security, SSH key policy, and firewall hardening are handled by later stories.
+- Secure SSH access from the MacBook was completed in story #12; broader firewall hardening remains separate.
