@@ -13,6 +13,7 @@ Current architecture and delivery documents:
 - [Forge hardware preparation](docs/hardware/forge.md)
 - [Fedora Server installation runbook](docs/runbooks/fedora-installation.md)
 - [Forge SSH access runbook](docs/runbooks/ssh-access.md)
+- [Forge host baseline runbook](docs/runbooks/host-baseline.md)
 - [Forge network identity](docs/network/forge-network.md)
 - [Home platform naming](docs/network/naming.md)
 - [Raspberry Pi deployment architecture](docs/current-deployment.md)
