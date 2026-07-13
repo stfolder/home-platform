@@ -55,8 +55,8 @@ Non-responsibilities:
 
 | Component      | Current value            | Verification status               | Notes                                                                |
 | -------------- | ------------------------ | --------------------------------- | -------------------------------------------------------------------- |
-| Hostname       | `fedora`                 | Temporary                         | Temporary hostname for #10; stable identity is owned by #11.         |
-| Local DNS name | `forge.home.arpa`        | Planned                           | To be configured after Fedora installation and LAN addressing story. |
+| Hostname       | `forge`                  | Permanent                         | Configured during story #11.                                         |
+| Local DNS name | `forge.home.arpa`        | Configured                        | Canonical local DNS name configured during story #11.                |
 | CPU            | Intel Core i7-9700K      | Confirmed                         | Confirmed during installation validation.                            |
 | RAM            | 32 GB                    | Confirmed                         | Confirmed during installation validation.                            |
 | GPU            | NVIDIA RTX 2080 Super    | Optional                          | Installation decision recorded below.                                |
@@ -64,29 +64,51 @@ Non-responsibilities:
 | Power          | UPS-backed               | Verified                          | Forge and pfSense are on UPS-backed power.                            |
 | Target OS      | Fedora Server 44, x86_64 | Installed                         | Fedora Server installed on the Samsung 970 EVO Plus.                  |
 
+## System Platform
+
+Live system facts collected from Forge over SSH:
+
+| Category | Value | Source / notes |
+|---|---|---|
+| Hardware vendor | Gigabyte Technology Co., Ltd. | `hostnamectl` |
+| Motherboard / model | Z390 AORUS PRO WIFI | `hostnamectl` |
+| Firmware version | F10 | `hostnamectl` |
+| Firmware date | 2019-06-05 | `hostnamectl` |
+| Operating system | Fedora Linux 44 Server Edition | `hostnamectl` |
+| Kernel | Linux 7.1.3-200.fc44.x86_64 | `hostnamectl` |
+| Architecture | x86-64 | `hostnamectl`, `lscpu` |
+| CPU | Intel Core i7-9700K CPU @ 3.60GHz | `lscpu` |
+| CPU topology | 1 socket, 8 cores, 8 threads | `lscpu`; one thread per core |
+| CPU frequency range | 800 MHz to 4.9 GHz | `lscpu` |
+| CPU virtualization | VT-x | `lscpu`; VT-d confirmed in firmware during #9 |
+| Memory | 32 GB installed, approximately 31 GiB visible to Fedora | `free -h` |
+| Swap | 8 GiB zram | `free -h`, `lsblk` |
+
 ## Disk Inventory and Disposition
 
 Disk inventory after Fedora installation:
 
-| Disk identifier      | Size   | Model or serial                 | Current contents                    | Disposition              | Notes |
-| -------------------- | -----: | ------------------------------- | ----------------------------------- | ------------------------ | ----- |
-| Samsung 970 EVO Plus | 512 GB | deferred to generated inventory | Fedora Server 44                    | installed OS             | Fedora Server target disk. Reliable and fast. |
-| Intel 660p           | 1 TB   | deferred to generated inventory | Unknown; no important data expected | reuse later after checks | Separate SSD from the failing 2 TB HDD. It previously behaved inconsistently under Windows but normally under Linux. Verify identity and health before formatting or assigning platform storage. |
-| HDD                  | 2 TB   | deferred to generated inventory | Empty                               | investigate before use   | Identified as `/dev/sda` during story #10; SMART overall health reports `PASSED`, but journal reports 664 pending and 664 offline uncorrectable sectors. Investigation is tracked in #16. |
+| Disk identifier      | Size   | Model / serial | Current contents                    | Disposition              | Notes |
+| -------------------- | -----: | -------------- | ----------------------------------- | ------------------------ | ----- |
+| Samsung 970 EVO Plus | 512 GB | Samsung SSD 970 EVO Plus 500GB / `S4P2NF0M604252A` | Fedora Server 44 | installed OS | Fedora Server target disk. Reliable and fast. Linux device: `/dev/nvme1n1`. |
+| Intel 660p           | 1 TB   | INTEL SSDPEKNW010T8 / `PHNH913302541P0B` | Unknown; no important data expected | reuse later after checks | Separate SSD from the failing 2 TB HDD. It previously behaved inconsistently under Windows but normally under Linux. Verify identity and health before formatting or assigning platform storage. Linux device: `/dev/nvme0n1`. |
+| HDD                  | 2 TB   | ST2000DM001-1CH164 / `Z1E23D8Q` | Empty / legacy NTFS partition | investigate before use | Identified as `/dev/sda` during story #10; SMART overall health reports `PASSED`, but journal reports 664 pending and 664 offline uncorrectable sectors. Investigation is tracked in #16. |
 
 The Intel 660p and the 2 TB HDD are distinct devices. Issue #16 applies only to the 2 TB HDD that produced the critical SMART and journal warnings.
 
 ## Installed Partition Layout
 
-Fedora Server is installed on the Samsung 970 EVO Plus using GPT partitioning and UEFI boot.
+Fedora Server is installed on the Samsung 970 EVO Plus using GPT partitioning, UEFI boot, XFS, and LVM for the root filesystem.
 
-| Partition pattern | Mount point | Purpose |
-|---|---|---|
-| `nvme?n1p1` | `/boot/efi` | EFI system partition |
-| `nvme?n1p2` | `/boot` | Boot partition |
-| `nvme?n1p3` | `/` | Root filesystem |
+| Device | Size | Type | Filesystem | Mount point | UUID | PARTUUID |
+|---|---:|---|---|---|---|---|
+| `/dev/nvme1n1` | 465.8 GB | GPT disk | n/a | n/a | n/a | n/a |
+| `/dev/nvme1n1p1` | 600 MB | EFI System | vfat | `/boot/efi` | `6135-9E17` | `17bb94a4-c674-433d-b9af-ce9ba4bf1321` |
+| `/dev/nvme1n1p2` | 2 GB | Linux filesystem | xfs | `/boot` | `ebb82fe3-08f0-462a-8149-2508809db012` | `23831933-1f13-46d6-a7d9-4005b863432c` |
+| `/dev/nvme1n1p3` | 463.2 GB | Linux LVM | LVM2_member | LVM physical volume | `PFWKNG-abdj-P0br-xC3r-dHWv-yWC9-dGyStZ` | `44d1d82c-f457-4ccd-82fc-185609bd87aa` |
+| `/dev/mapper/fedora-root` | 15 GB | LVM logical volume | xfs | `/` | `a6baaddb-7edf-42a6-8406-e355ccc61467` | n/a |
 
-These names record the observed partition pattern, not a stable disk identity. Current device names, filesystem UUIDs, and PARTUUIDs will be collected directly from Forge by #17 after SSH access is available. Use model, serial number, UUID, or PARTUUID for durable identification once generated inventory exists.
+Linux device names can change across hardware changes or firmware events. Prefer model, serial number, filesystem UUID, or PARTUUID for durable identification.
 
 Allowed dispositions:
 
@@ -109,7 +131,7 @@ Validation evidence:
 - Disk size and model matched the selected target.
 - Fedora boots from the selected target disk without installation media.
 - Non-target disks were not selected for the Fedora installation.
-- Exact serial number and stable partition identifiers are deferred to generated inventory in #17.
+- Disk serial number and stable partition identifiers are recorded in this document; broader generated inventory remains tracked by #17.
 
 ## Firmware Configuration
 
@@ -120,7 +142,7 @@ Validation evidence:
 | VT-d             | Enabled when supported                                | Confirmed enabled    | Useful for device isolation and future advanced virtualization.               |
 | Secure Boot      | Disabled                                              | Decision recorded    | Secure Boot remains disabled for the initial Fedora installation.             |
 | Boot order       | USB first for installation, target disk after install | Verified             | Fedora target disk is the normal boot device after installation.              |
-| BIOS/UEFI update | Evaluate before install                               | Evaluated            | Exact firmware version is deferred to generated inventory in #17.             |
+| BIOS/UEFI update | Evaluate before install                               | Evaluated            | Current firmware version is F10, dated 2019-06-05.                            |
 
 ## Installation Decisions
 
@@ -209,6 +231,7 @@ Media used:
 - [x] Intel 660p is preserved for later reuse after checks.
 - [x] Non-target 2 TB HDD SMART and journal warning is documented for follow-up in #16.
 - [x] Detailed volatile identifiers are intentionally deferred to generated inventory in #17.
+- [x] Permanent hostname and local DNS identity are configured in #11.
 
 ## Recovery and Rollback Summary
 
@@ -235,3 +258,4 @@ Rollback approach:
 | 2026-07-11 | Recorded Fedora Server installation validation state for story #10. | Codex |
 | 2026-07-11 | Clarified that Intel 660p is a reusable SSD separate from the failing 2 TB HDD; corrected disk dispositions and security wording. | Nyx |
 | 2026-07-11 | Deferred volatile identifiers to SSH-based generated inventory and linked story #17. | Nyx |
+| 2026-07-12 | Recorded permanent hostname and local DNS identity for story #11. | Codex |

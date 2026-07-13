@@ -11,6 +11,8 @@ Current architecture and delivery documents:
 - [Sprint 1: Forge Online](docs/sprints/sprint-001.md)
 - [Forge hardware preparation](docs/hardware/forge.md)
 - [Fedora Server installation runbook](docs/runbooks/fedora-installation.md)
+- [Forge network identity](docs/network/forge-network.md)
+- [Home platform naming](docs/network/naming.md)
 - [Raspberry Pi deployment architecture](docs/current-deployment.md)
 - [Hermes AI platform architecture](docs/hermes-ai.md)
 - [Internal identity and access architecture](docs/identity-access.md)

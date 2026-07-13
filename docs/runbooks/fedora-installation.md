@@ -46,7 +46,7 @@ Out of scope for this runbook:
 
 Stop and do not install Fedora if any of the following are true:
 
-- The target installation disk is still `TBD`.
+- The target installation disk has not been documented and confirmed.
 - Any disk has an unknown disposition.
 - Important data has not been backed up.
 - The Fedora image checksum has not been verified.
@@ -258,23 +258,25 @@ sudo reboot
 | Fedora edition | Fedora Server |
 | Fedora version | Fedora 44 |
 | Installation date | 2026-07-11 |
-| Temporary hostname | `fedora` |
-| Target disk | Samsung 970 EVO Plus |
+| Current hostname | `forge` |
+| Target disk | Samsung 970 EVO Plus, serial `S4P2NF0M604252A` |
 | Boot mode | UEFI |
 | Partitioning | GPT |
-| Root filesystem | XFS |
+| Root filesystem | XFS on LVM logical volume `fedora-root` |
 | SELinux | Enforcing |
 | Firewall | firewalld running |
 
 ### Partition Layout
 
-| Partition | Mount point | Notes |
-|---|---|---|
-| `nvme?n1p1` | `/boot/efi` | EFI system partition |
-| `nvme?n1p2` | `/boot` | Boot partition |
-| `nvme?n1p3` | `/` | Root filesystem |
+| Device | Size | Type | Filesystem | Mount point | UUID | PARTUUID |
+|---|---:|---|---|---|---|---|
+| `/dev/nvme1n1` | 465.8 GB | GPT disk | n/a | n/a | n/a | n/a |
+| `/dev/nvme1n1p1` | 600 MB | EFI System | vfat | `/boot/efi` | `6135-9E17` | `17bb94a4-c674-433d-b9af-ce9ba4bf1321` |
+| `/dev/nvme1n1p2` | 2 GB | Linux filesystem | xfs | `/boot` | `ebb82fe3-08f0-462a-8149-2508809db012` | `23831933-1f13-46d6-a7d9-4005b863432c` |
+| `/dev/nvme1n1p3` | 463.2 GB | Linux LVM | LVM2_member | LVM physical volume | `PFWKNG-abdj-P0br-xC3r-dHWv-yWC9-dGyStZ` | `44d1d82c-f457-4ccd-82fc-185609bd87aa` |
+| `/dev/mapper/fedora-root` | 15 GB | LVM logical volume | xfs | `/` | `a6baaddb-7edf-42a6-8406-e355ccc61467` | n/a |
 
-The exact NVMe controller number can vary across boots and should be confirmed with `lsblk` when needed.
+Linux device names can change across hardware changes or firmware events. Prefer model, serial number, filesystem UUID, or PARTUUID for durable identification.
 
 After reboot:
 
@@ -328,12 +330,12 @@ Validation results captured from the local console on Forge.
 | Check                        | Result | Expected or observed value / notes                                                                                                                                                                                     |
 | ---------------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Fedora version               | PASS   | Fedora release 44 (Forty Four)                                                                                                                                                                                         |
-| Hostname                     | PASS   | fedora (temp name)                                                                                                                                                                                                     |
+| Hostname                     | PASS   | `fedora` was used as the temporary #10 hostname; current permanent hostname is `forge` after #11.                                                                                                                       |
 | Timezone                     | PASS   | `America/Los_Angeles`                                                                                                                                                                                                  |
 | Locale                       | PASS   | System Locale: LANG=en_US.UTF-8, VC Keymap: ru                                                                                                                                                                         |
 | Installation disk            | PASS   | Fedora installed on Samsung 970 EVO Plus.                                                                                                                                                                              |
 | Partitioning                 | PASS   | GPT partitioning with UEFI boot.                                                                                                                                                                                       |
-| Filesystems                  | PASS   | xfs. Reason: Default Fedora Server installation. Chosen for maturity, enterprise adoption, Docker/Kubernetes compatibility, and reproducibility over snapshot-oriented workflows.                                      |
+| Filesystems                  | PASS   | XFS for `/boot` and `/`, with `/` on LVM logical volume `fedora-root`. Reason: default Fedora Server installation, chosen for maturity, enterprise adoption, Docker/Kubernetes compatibility, and reproducibility over snapshot-oriented workflows. |
 | Installation media removed   | PASS   | yes.                                                                                                                                                                                                                   |
 | Boot without intervention    | PASS   | Forge boots from internal Fedora target disk without user intervention.                                                                                                                                                |
 | Non-root administrative user | PASS   | Non-root admin user exists; username intentionally not documented if preferred.                                                                                                                                        |
