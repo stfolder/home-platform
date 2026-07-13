@@ -2,7 +2,7 @@
 
 ## Status
 
-Active.
+Complete.
 
 ## Duration
 
@@ -12,85 +12,66 @@ Three weeks.
 
 Prepare and bring Forge online as a documented Fedora development server with a stable identity on the home LAN.
 
-## Capacity
+**Result:** Achieved.
 
-Original planned capacity: **10 story points**.
+## Capacity and delivery
 
-Planning assumptions:
+- Original planned capacity: **10 story points**.
+- Original commitment delivered: **10 of 10 points**.
+- Pulled stretch work delivered: **3 points**.
+- Total delivered: **13 story points**.
 
-- Four to five focused sessions per week.
-- Approximately five to seven engineering hours per week.
-- Approximately fifteen to twenty engineering hours over the sprint.
+The pulled work remains separate from the original commitment so future planning does not treat stretch delivery as guaranteed capacity.
+
+## Delivered stories
+
+| Issue | Story | Points | Commitment | Final status |
+|---|---|---:|---|---|
+| #9 | Prepare Forge for Fedora installation | 2 | Committed | Done |
+| #10 | Install and validate Fedora Server on Forge | 5 | Committed | Done |
+| #11 | Establish Forge's permanent network identity | 3 | Committed | Done |
+| #12 | Establish secure SSH access from the MacBook | 3 | Pulled stretch | Done |
+
+## Delivered platform state
+
+- Fedora Server 44 is installed and boots reliably.
+- Forge operates headlessly in the server room.
+- Permanent hostname is `forge`.
+- Canonical LAN name is `forge.home.arpa`.
+- Stable addressing is provided by a pfSense DHCP reservation.
+- Secure SSH uses a dedicated MacBook key and the `ssh forge` alias.
+- Root SSH login, password authentication, and keyboard-interactive authentication are disabled.
+- Installation, network identity, recovery, and SSH procedures are documented.
+- Follow-up work discovered during delivery is tracked separately.
+
+## Sprint review evidence
+
+- Running Forge host and successful reboot.
+- LAN resolution and reachability through `forge.home.arpa`.
+- Fresh key-based `ssh forge` login.
+- Failed password-only and root-login tests.
+- Hardware, installation, network, and SSH documentation committed.
+- Public-repository review completed for unique machine identifiers and secrets.
+
+## Retrospective observations
+
+### What worked
+
 - One primary story in progress at a time.
+- Grooming before implementation.
+- Explicit safe sequences for destructive and lockout-prone work.
+- Capturing discoveries as follow-up issues rather than expanding stories silently.
+- Reviewing documentation before accepting stories.
 
-This is the first measured sprint. Future capacity must be adjusted from observed velocity rather than optimism.
+### Improvements carried forward
 
-## Original commitment
+- Keep unique machine identifiers in private or host-local generated inventory.
+- Keep planned capacity conservative until several sprint data points exist.
+- Record final story status in sprint documents as part of sprint closure.
+- Preserve a clear boundary between committed and pulled stretch work.
 
-| Issue | Story | Points | Initial board status | Dependency |
-|---|---|---:|---|---|
-| #9 | Prepare Forge for Fedora installation | 2 | Ready | None |
-| #10 | Install Fedora Server on Forge | 5 | Backlog | #9 |
-| #11 | Configure stable hostname and LAN addressing | 3 | Backlog | #10 |
+## Next sprint
 
-Original commitment: **10 story points**.
+Sprint 2 focuses on turning Forge from a secure server into a practical remote development workstation.
 
-## Pulled stretch work
-
-| Issue | Story | Points | Pull status | Dependency |
-|---|---|---:|---|---|
-| #12 | Establish secure SSH access from the MacBook | 3 | Ready | #11 |
-
-Issue #12 was pulled into Sprint 1 after the original committed stories were completed or clearly on track. It remains recorded separately from the original commitment so the sprint review can distinguish planned capacity from additional delivered work.
-
-Current sprint scope: **13 story points**, consisting of **10 committed points** plus **3 pulled stretch points**.
-
-## Execution order
-
-1. Complete and accept #9.
-2. Complete and accept #10.
-3. Complete and accept #11.
-4. Pull #12 into the sprint as stretch work.
-5. Preserve the one-primary-story work-in-progress limit.
-6. Move #12 to Review only after key authentication, negative authentication tests, reboot validation, and documentation are complete.
-
-## Sprint success criteria
-
-Sprint 1 succeeds when:
-
-- Forge is prepared safely for installation.
-- Fedora Server is installed on the approved disk.
-- The host boots reliably and has wired connectivity.
-- The hostname and stable LAN addressing are configured.
-- `forge.home.arpa` resolves from an approved LAN client.
-- Required hardware, installation, and network documentation is committed.
-- No undocumented destructive action or unresolved recovery gap remains.
-
-Pulled stretch success for #12 additionally requires:
-
-- `ssh forge` succeeds from the MacBook using a dedicated key.
-- Root SSH login and password-only authentication fail.
-- Secure access survives SSH reload and Forge reboot.
-- SSH setup, recovery, and key revocation are documented.
-
-## Review evidence
-
-The sprint review should include:
-
-- The running Forge host.
-- Successful reboot evidence.
-- LAN reachability by hostname.
-- Links to documentation produced by the committed stories.
-- For #12, successful key-based login plus failed password-only and root-login tests.
-- Deviations, follow-up issues, and any ADR changes.
-- A clear distinction between the original 10-point commitment and the 3 points pulled afterward.
-
-## Retrospective questions
-
-- Was 10 points realistic for three weeks?
-- How many focused sessions were actually available?
-- Which work produced unexpected friction?
-- Did the stories contain enough documentation guidance?
-- Was pulling #12 healthy use of available capacity, or did it create avoidable pressure?
-- Should pulled stretch points count separately when calculating future planning velocity?
-- Should the next sprint retain, reduce, or increase planned capacity?
+See [Sprint 2: Forge Workbench](sprint-002.md).
