@@ -10,7 +10,7 @@ Related stories:
 - [#11 Establish Forge's permanent network identity](https://github.com/stfolder/home-platform/issues/11)
 - [#17 Generate Forge system inventory from the running host](https://github.com/stfolder/home-platform/issues/17)
 
-This document records the human-reviewed network identity for Forge. Long volatile identifiers, such as complete interface inventories and generated hardware identifiers, are deferred to #17 once secure SSH access exists.
+This document records the human-reviewed network identity for Forge. Unique machine identifiers, such as full MAC addresses and generated hardware identifiers, are intentionally excluded from this public repository. Exact values belong in private or host-local inventory produced by #17.
 
 ## Identity
 
@@ -28,7 +28,7 @@ This document records the human-reviewed network identity for Forge. Long volati
 | Field | Value | Status | Notes |
 |---|---|---|---|
 | Primary interface | `eno2` | Verified from Forge | Wired Ethernet interface. |
-| MAC address | `b4:2e:99:3f:a7:a1` | Verified from Forge | This is the MAC used for the DHCP reservation. |
+| Reservation identifier | Verified wired-interface MAC | Verified from Forge | Exact MAC is retained only in pfSense and private or host-local inventory. |
 | Interface source command | `ip link`, `nmcli device status`, `nmcli device show` | Reference | Full generated inventory is deferred to #17. |
 
 ## Host Configuration Baseline
@@ -51,10 +51,10 @@ This document records the human-reviewed network identity for Forge. Long volati
 | Hostname | `forge` |
 | Domain | `home.arpa` |
 | DNS name | `forge.home.arpa` |
-| Reservation MAC | `b4:2e:99:3f:a7:a1` |
+| Reservation identity | Forge's verified wired-interface MAC; exact value retained in pfSense |
 | Reserved IP | `10.42.42.77` |
 
-Do not store pfSense credentials, backup exports containing secrets, VPN keys, or private certificates in this repository.
+Do not store pfSense credentials, backup exports containing secrets, VPN keys, private certificates, or complete unique hardware identifiers in this public repository.
 
 ## Validation Procedure
 
@@ -90,7 +90,7 @@ SSH validation for story #11 only proves hostname resolution reaches the host. S
 |---|---|---|
 | Permanent hostname is `forge` | PASS | `hostnamectl` and `/etc/hostname` verified on Forge. |
 | Hostname persists after reboot | PASS | Verified after reboot. |
-| DHCP reservation configured | PASS | pfSense reservation created for wired MAC address `b4:2e:99:3f:a7:a1`. |
+| DHCP reservation configured | PASS | pfSense reservation created for Forge's verified wired interface. |
 | Fedora does not use static IP | PASS | Addressing remains DHCP-based. |
 | Canonical DNS name resolves | PASS | `forge.home.arpa` resolves to `10.42.42.77` from LAN. |
 | Forward lookup from LAN succeeds | PASS | `ping forge.home.arpa` from the Mac resolved `10.42.42.77`. |
@@ -121,7 +121,7 @@ nmcli device status
 nmcli device show
 ```
 
-4. In pfSense, recreate the LAN DHCP reservation for the wired MAC address.
+4. In pfSense, recreate the LAN DHCP reservation for the verified wired-interface MAC address.
 5. Set the hostname to `forge` and local domain to `home.arpa`.
 6. Renew DHCP on Forge:
 
@@ -134,7 +134,7 @@ sudo nmcli networking on
 
 ## Security Notes
 
-- No credentials, private keys, pfSense backup exports containing secrets, or DHCP lease files are committed.
+- No credentials, private keys, pfSense backup exports containing secrets, DHCP lease files, or complete unique hardware identifiers are committed.
 - Forge uses DHCP reservation rather than a static Fedora IP configuration.
 - Stable network identity does not imply public exposure.
 - Remote access security, SSH key policy, and firewall hardening are handled by later stories.
