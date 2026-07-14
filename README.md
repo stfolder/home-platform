@@ -15,6 +15,7 @@ Current architecture and delivery documents:
 - [Forge SSH access runbook](docs/runbooks/ssh-access.md)
 - [Forge host baseline runbook](docs/runbooks/host-baseline.md)
 - [Forge development toolchain runbook](docs/runbooks/development-toolchain.md)
+- [Forge remote development runbook](docs/runbooks/remote-development.md)
 - [Forge network identity](docs/network/forge-network.md)
 - [Home platform naming](docs/network/naming.md)
 - [Raspberry Pi deployment architecture](docs/current-deployment.md)
