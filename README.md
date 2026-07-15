@@ -17,6 +17,7 @@ Current architecture and delivery documents:
 - [Forge development toolchain runbook](docs/runbooks/development-toolchain.md)
 - [Forge remote development runbook](docs/runbooks/remote-development.md)
 - [Forge browser VS Code runbook](docs/runbooks/browser-vscode.md)
+- [Forge VPN remote access runbook](docs/runbooks/vpn-remote-access.md)
 - [Forge network identity](docs/network/forge-network.md)
 - [Home platform naming](docs/network/naming.md)
 - [Raspberry Pi deployment architecture](docs/current-deployment.md)

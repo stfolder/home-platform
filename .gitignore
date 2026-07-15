@@ -1,0 +1,6 @@
+# Local VPN/client helper checkouts and generated profiles.
+wireguard-macos/
+wg-home-*.conf
+*.mobileconfig
+*.wg
+*.qr
