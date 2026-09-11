@@ -2,13 +2,15 @@
 
 ## Status
 
-LAN validation complete for story #15. Outside-LAN validation is deferred until #18 provides VPN-only access.
+Story #15's original MacBook, SSH, browser, and JetBrains Remote Development paths are validated. A later native IntelliJ RDP path is also working from the iPad on the trusted LAN; its external WireGuard, reconnect, clipboard, and final firewall-policy checks remain open.
 
 Related stories:
 
 - [#14 Install core development toolchain](https://github.com/stfolder/home-platform/issues/14)
 - [#15 Validate IntelliJ, VS Code, and iPad remote development workflows](https://github.com/stfolder/home-platform/issues/15)
 - [#18 Enable VPN-only remote access](https://github.com/stfolder/home-platform/issues/18)
+
+The native iPad graphical path is documented separately in the [Forge iPad RDP workstation runbook](ipad-rdp-workstation.md) and [ADR-0009](../adr/0009-use-xrdp-for-private-graphical-access.md).
 
 ## Course Frame
 
@@ -22,7 +24,7 @@ Remote development uses the layers established by story #14:
 
 1. **Forge host tooling:** Java 25, Maven, Git, Docker, Compose, Python, `uv`, Node.js through `nvm`, and shell tools.
 2. **Repository-owned configuration:** build files, wrappers, lockfiles, `.nvmrc`, `.python-version`, `.devcontainer`, Compose definitions, and test fixtures.
-3. **Client tools:** IntelliJ IDEA, VS Code, terminal clients, and iPad clients. Clients should connect to Forge; they should not duplicate the full toolchain locally.
+3. **Client tools:** IntelliJ IDEA, VS Code, terminal clients, and iPad clients. Clients should connect to Forge; they should not duplicate the full toolchain locally. For the native iPad graphical path, IntelliJ itself runs on Forge inside a private xrdp session.
 
 Docker remains Unix-socket-only. No IDE convenience feature is allowed to turn the Docker daemon into a LAN piñata.
 
@@ -92,9 +94,10 @@ Notes:
 
 ## Remaining Validation
 
-- Outside-LAN MacBook workflow after #18 provides VPN-only access.
-- Outside-LAN iPad workflow after #18 provides VPN-only access.
-- Final story bookkeeping and issue update.
+- Native RDP from the iPad through WireGuard on a genuinely external network.
+- Privileged capture of the effective Forge firewalld rules for TCP `3389`.
+- Deliberate RDP disconnect/reconnect, two-way clipboard, modifier-key, and function-row replacement checks.
+- Optional lightweight i3 X11 profile while preserving XFCE as the validated fallback.
 
 ## IntelliJ Remote Development
 
@@ -484,7 +487,9 @@ Lockfile commit:
 | Commit | `e1d8a44 Record dev container feature lockfile` |
 | Git status after commit | clean |
 
-## iPad Thin-Client Workflow
+## Initial iPad SSH Thin-Client Workflow
+
+This was the first validated iPad path. It remains the low-bandwidth recovery and terminal workflow, but the later native IntelliJ RDP session is now the preferred full IDE path. See the [Forge iPad RDP workstation runbook](ipad-rdp-workstation.md).
 
 ### Part 8: SSH And tmux Java Workflow
 

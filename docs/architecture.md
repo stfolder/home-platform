@@ -8,7 +8,7 @@ The platform is designed to provide:
 
 - A persistent personal development workstation reachable from approved devices.
 - Secure remote access through a private VPN.
-- Browser-based and SSH-based development workflows.
+- Browser-based, SSH-based, and private graphical development workflows.
 - Support for Java, Angular, TypeScript, Python, Docker, and AI coding tools.
 - A separate Kubernetes deployment target for long-running personal applications.
 - Secure VPN-only access to a hardware KVM connected to a work laptop, where use complies with employer policy.
@@ -102,6 +102,7 @@ Responsibilities:
 
 - VS Code Remote SSH.
 - IntelliJ Remote Development or JetBrains Gateway evaluation.
+- Native IntelliJ IDEA in a private xrdp session for iPad graphical access.
 - AI coding agents such as OpenCode, Codex CLI when available and approved, and other terminal-based coding harnesses.
 - Git repositories.
 - Docker Compose for local development and temporary testing services.
@@ -115,6 +116,8 @@ Non-responsibilities:
 - Running the Kubernetes control plane unless explicitly assigned as a Kubernetes node in the separate cluster design.
 - Exposing services directly to the public internet.
 - Storing secrets in Git.
+
+The xrdp listener is an internal administrative service. It must be restricted to trusted LAN and WireGuard source networks and must never be forwarded directly from the public internet. XFCE is the validated recovery desktop; a lightweight i3 profile may be added as a reversible user-level optimization after acceptance testing.
 
 ### 4.3 Kubernetes Cluster
 
