@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted
+Accepted; final implementation verification is in progress.
 
 ## Context
 
@@ -62,6 +62,7 @@ Keeping IntelliJ native to Forge removes the extra remote-filesystem or nested r
 - Xorg/i3 will not reproduce Hyprland's Wayland-native animations, gestures, and compositor effects.
 - Native IntelliJ consumes more Forge memory than terminal or browser-only workflows.
 - Session persistence, clipboard behavior, and external-network quality require ongoing acceptance testing.
+- The accepted source-scoped firewall control is not fully verified until the effective privileged firewalld configuration is captured.
 
 ## Alternatives Considered
 

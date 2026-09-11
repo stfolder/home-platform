@@ -55,6 +55,13 @@ RDP is an internal administrative service.
 
 xrdp currently listens on all Forge interfaces at TCP `3389`. The firewall and router policy therefore form the network boundary; both must be verified after changes.
 
+Capture the existing runtime and permanent policy before making any change:
+
+```bash
+sudo firewall-cmd --zone=FedoraServer --list-all
+sudo firewall-cmd --permanent --zone=FedoraServer --list-all
+```
+
 The intended firewalld policy is source-scoped rich rules rather than a global port allowance:
 
 ```bash
@@ -68,7 +75,7 @@ sudo firewall-cmd --check-config
 sudo firewall-cmd --reload
 ```
 
-Before applying those commands, inspect the existing policy and avoid duplicate rules. Remove any unscoped `3389/tcp` port or RDP service allowance if one exists, but keep an SSH recovery session open while changing the firewall.
+Do not add the rich rules until the preflight confirms what already exists. Avoid duplicate rules. Remove any unscoped `3389/tcp` port or RDP service allowance if one exists, but keep an SSH recovery session open while changing the firewall.
 
 Verify runtime and permanent state:
 

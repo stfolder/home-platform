@@ -117,7 +117,7 @@ Non-responsibilities:
 - Exposing services directly to the public internet.
 - Storing secrets in Git.
 
-The xrdp listener is an internal administrative service. It must be restricted to trusted LAN and WireGuard source networks and must never be forwarded directly from the public internet. XFCE is the validated recovery desktop; a lightweight i3 profile may be added as a reversible user-level optimization after acceptance testing.
+The xrdp listener is an internal administrative service. It must be restricted to trusted LAN and WireGuard source networks and must never be forwarded directly from the public internet. The current implementation is not fully accepted until the effective privileged firewalld policy is captured. XFCE is the validated recovery desktop; a lightweight i3 profile may be added as a reversible user-level optimization after acceptance testing.
 
 ### 4.3 Kubernetes Cluster
 
