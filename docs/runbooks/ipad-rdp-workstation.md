@@ -146,6 +146,23 @@ Policy=UB
 
 These values retain disconnected sessions and permit a matching user/color-depth client to rejoin. A deliberate disconnect/reconnect test is still required before treating persistence as fully accepted.
 
+### Nyx XFCE styling
+
+XFCE remains the default RDP desktop, with a restrained Nyx palette chosen for legibility over an iPad connection:
+
+- XFCE panels use the Nyx deep-violet background (`#1d1a2b`) with dark mode enabled.
+- `xfce4-terminal` uses the Nyx terminal palette, including `#1d1a2b` background, `#dad6eb` foreground, and violet cursor/selection colors.
+- GTK prefers dark applications and uses Noto Sans / Noto Sans Mono for predictable rendering.
+- XFWM4 uses the installed `Kokodi` dark window-decoration theme; no compositor, wallpaper daemon, or animation was added.
+
+The changes are user-scoped and were backed up on Forge under:
+
+```text
+~/.config/xfce4/nyx-backup-20260911-234320/
+```
+
+To roll back the XFCE channel state, restore the saved values with `xfconf-query` from `xsettings.txt`, `xfwm4.txt`, and `panel.txt`; restore `terminalrc` if needed. `.Xclients` and `.xsession` were not modified. The styling is applied to XFCE's saved configuration and becomes visible on the next XFCE RDP login; it does not alter an already-running i3 session.
+
 ## RDP Transport Characteristics
 
 The successful iPad connection established:
