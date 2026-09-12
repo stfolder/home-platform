@@ -246,6 +246,7 @@ Design requirements:
 - Recreate Umbra's meaningful interaction model: directional focus, deterministic tiling, numbered workspaces, launcher, fullscreen, and move-to-workspace actions.
 - Keep the Umbra visual vocabulary lightweight over RDP: 5px inner gaps, 10px outer gaps, dark surfaces, and a violet focused border.
 - Route Kitty/tmux to workspace 1, IntelliJ to workspace 3, and Thunar to workspace 5 when new windows are created.
+- Preserve Umbra's `Alt+Q` close-focused-window action. Because the iPad RDP path may swallow Alt+number, use `Alt+W/E/T/Y/U/O/P/Z/X/C` as the workspace 1–10 fallback and `Alt+Control+W/E/T/Y/U/O/P/Z/X/C` to move containers.
 - Provide a service mode on `Alt+Shift+;` for reload, floating toggle, layout toggle, and closing the focused window; `Alt+Escape` normalizes the current workspace.
 - Bind only key combinations that the iPad RDP client reliably transmits; do not depend on a function row.
 - Keep configuration under user scope until the profile is validated and ready for Ansible ownership.
