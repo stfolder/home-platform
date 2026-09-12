@@ -12,7 +12,7 @@ Validated on 2026-09-11:
 - IntelliJ IDEA Ultimate runs directly on Forge with its own desktop configuration and cache paths.
 - The xrdp clipboard channel is enabled and its channel process is running.
 - Basic IntelliJ use from the iPad is practical; missing function-row keys and some modifier combinations remain client-input limitations.
-- The user-scoped i3 profile is now active for new logins. The first post-activation RDP login reached i3 successfully with i3bar, i3status, dunst, xfce-polkit, and xrdp clipboard support running.
+- The user-scoped i3 profile was validated successfully, but XFCE is currently the default for new logins because its visible desktop/app affordances are a better iPad experience. i3 remains installed and reversible for focused keyboard experiments.
 - Fedora Kitty `0.47.1` is installed and launches successfully inside i3, attaching to the persistent Forge `base` tmux session.
 - The live i3 profile now carries the Umbra interaction layer: small gaps, violet focus treatment, mouse-assisted tiling, service mode, layout normalization, and routing for Kitty, IntelliJ, and Thunar.
 
@@ -235,7 +235,7 @@ Do not save the Forge password in this public repository. Whether the iPad RDP c
 
 ## i3 Profile
 
-The active profile is an additional lightweight i3 X11 session, not a replacement for the validated XFCE fallback.
+The i3 profile is an additional lightweight X11 session, not a replacement for the validated XFCE default.
 
 Design requirements:
 
