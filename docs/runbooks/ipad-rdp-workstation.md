@@ -12,6 +12,7 @@ Validated on 2026-09-11:
 - IntelliJ IDEA Ultimate runs directly on Forge with its own desktop configuration and cache paths.
 - The xrdp clipboard channel is enabled and its channel process is running.
 - Basic IntelliJ use from the iPad is practical; missing function-row keys and some modifier combinations remain client-input limitations.
+- The user-scoped i3 profile is now active for new logins. The first post-activation RDP login reached i3 successfully with i3bar, i3status, dunst, xfce-polkit, and xrdp clipboard support running.
 
 Still to validate:
 
@@ -19,7 +20,7 @@ Still to validate:
 - Connect through WireGuard from a genuinely external network and repeat the RDP acceptance test.
 - Disconnect and reconnect deliberately, confirming that the same IntelliJ/XFCE session is recovered.
 - Test clipboard text in both directions and record the iPad client's exact modifier-key behavior.
-- Evaluate the planned i3 profile described below. i3 is not installed or selected yet.
+- Exercise the i3 profile through IntelliJ, including launcher, terminal, clipboard, workspace, and reconnect behavior.
 
 Related documents:
 
@@ -230,9 +231,9 @@ Do not save the Forge password in this public repository. Whether the iPad RDP c
 - [ ] Reboot Forge and validate predictable recovery.
 - [ ] Test a constrained or unstable network connection.
 
-## Planned i3 Profile
+## i3 Profile
 
-The next experiment is an additional lightweight i3 X11 profile, not a replacement for the validated XFCE session.
+The active profile is an additional lightweight i3 X11 session, not a replacement for the validated XFCE fallback.
 
 Design requirements:
 
@@ -245,6 +246,16 @@ Design requirements:
 - Keep configuration under user scope until the profile is validated and ready for Ansible ownership.
 
 Hyprland is not part of this RDP path. It is a Wayland compositor and would require a different remote-display architecture such as Sunshine/Moonlight or WayVNC. That can be evaluated separately if native Hyprland behavior becomes more important than xrdp compatibility.
+
+Profile selection and rollback:
+
+```bash
+~/.local/bin/forge-desktop-profile status
+~/.local/bin/forge-desktop-profile xfce   # select XFCE for the next login
+~/.local/bin/forge-desktop-profile i3     # select i3 after validation
+```
+
+The selector applies at session start. Log out cleanly before reconnecting; a simple RDP disconnect may reattach the existing session.
 
 ## Operational Checks
 
