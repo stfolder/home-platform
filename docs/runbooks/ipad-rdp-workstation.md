@@ -14,6 +14,7 @@ Validated on 2026-09-11:
 - Basic IntelliJ use from the iPad is practical; missing function-row keys and some modifier combinations remain client-input limitations.
 - The user-scoped i3 profile is now active for new logins. The first post-activation RDP login reached i3 successfully with i3bar, i3status, dunst, xfce-polkit, and xrdp clipboard support running.
 - Fedora Kitty `0.47.1` is installed and launches successfully inside i3, attaching to the persistent Forge `base` tmux session.
+- The live i3 profile now carries the Umbra interaction layer: small gaps, violet focus treatment, mouse-assisted tiling, service mode, layout normalization, and routing for Kitty, IntelliJ, and Thunar.
 
 Still to validate:
 
@@ -243,6 +244,9 @@ Design requirements:
 - Retain only required helpers for notifications, settings, authentication, and clipboard integration.
 - Use a minimal, slowly refreshed status bar.
 - Recreate Umbra's meaningful interaction model: directional focus, deterministic tiling, numbered workspaces, launcher, fullscreen, and move-to-workspace actions.
+- Keep the Umbra visual vocabulary lightweight over RDP: 5px inner gaps, 10px outer gaps, dark surfaces, and a violet focused border.
+- Route Kitty/tmux to workspace 1, IntelliJ to workspace 3, and Thunar to workspace 5 when new windows are created.
+- Provide a service mode on `Alt+Shift+;` for reload, floating toggle, layout toggle, and closing the focused window; `Alt+Escape` normalizes the current workspace.
 - Bind only key combinations that the iPad RDP client reliably transmits; do not depend on a function row.
 - Keep configuration under user scope until the profile is validated and ready for Ansible ownership.
 
