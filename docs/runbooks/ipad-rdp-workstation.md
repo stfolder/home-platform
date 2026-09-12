@@ -13,6 +13,7 @@ Validated on 2026-09-11:
 - The xrdp clipboard channel is enabled and its channel process is running.
 - Basic IntelliJ use from the iPad is practical; missing function-row keys and some modifier combinations remain client-input limitations.
 - The user-scoped i3 profile is now active for new logins. The first post-activation RDP login reached i3 successfully with i3bar, i3status, dunst, xfce-polkit, and xrdp clipboard support running.
+- Fedora Kitty `0.47.1` is installed and launches successfully inside i3, attaching to the persistent Forge `base` tmux session.
 
 Still to validate:
 
@@ -226,7 +227,7 @@ Do not save the Forge password in this public repository. Whether the iPad RDP c
 - [ ] Record Command, Option, Control, Shift, Escape, and Caps Lock behavior.
 - [ ] Define replacements for useful function-row shortcuts.
 - [ ] Validate right click, selection, dragging, and trackpad scrolling.
-- [ ] Validate IntelliJ terminal, build, run, debug, and database tools in this native session.
+- [ ] Validate Kitty/tmux and IntelliJ terminal, build, run, debug, and database tools in this native session.
 - [ ] Disconnect and reconnect to the same session.
 - [ ] Reboot Forge and validate predictable recovery.
 - [ ] Test a constrained or unstable network connection.
@@ -256,6 +257,12 @@ Profile selection and rollback:
 ```
 
 The selector applies at session start. Log out cleanly before reconnecting; a simple RDP disconnect may reattach the existing session.
+
+## Kitty and tmux
+
+Kitty is the primary i3 terminal on Forge. Its user-scoped configuration is adapted from the Nyx dotfiles: the shared palette and tmux workflow are retained, while Linux uses `bash` (Forge does not currently provide `zsh`), a monospace fallback font, opaque rendering, and no macOS titlebar or blur settings.
+
+`Alt+Enter` launches Kitty. Kitty starts or reattaches the Forge `base` tmux session, preserving the same terminal workspace vocabulary across reconnects. XFCE Terminal remains installed as a recovery fallback.
 
 ## Operational Checks
 
