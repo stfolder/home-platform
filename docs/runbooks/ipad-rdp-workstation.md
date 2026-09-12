@@ -12,7 +12,7 @@ Validated on 2026-09-11:
 - IntelliJ IDEA Ultimate runs directly on Forge with its own desktop configuration and cache paths.
 - The xrdp clipboard channel is enabled and its channel process is running.
 - Basic IntelliJ use from the iPad is practical; missing function-row keys and some modifier combinations remain client-input limitations.
-- The user-scoped i3 profile was validated successfully, but XFCE is currently the default for new logins because its visible desktop/app affordances are a better iPad experience. i3 remains installed and reversible for focused keyboard experiments.
+- The user-scoped i3 profile is now the default for new logins: its keyboard-first workflow proved more responsive and practical on the iPad. XFCE remains the reversible recovery desktop.
 - Fedora Kitty `0.47.1` is installed and launches successfully inside i3, attaching to the persistent Forge `base` tmux session.
 - The live i3 profile now carries the Umbra interaction layer: small gaps, violet focus treatment, mouse-assisted tiling, service mode, layout normalization, and routing for Kitty, IntelliJ, and Thunar.
 
@@ -252,7 +252,7 @@ Do not save the Forge password in this public repository. Whether the iPad RDP c
 
 ## i3 Profile
 
-The i3 profile is an additional lightweight X11 session, not a replacement for the validated XFCE default.
+i3 is the default lightweight X11 session for new Forge RDP logins. XFCE remains installed and selectable as a recovery desktop.
 
 Design requirements:
 
@@ -263,7 +263,7 @@ Design requirements:
 - Recreate Umbra's meaningful interaction model: directional focus, deterministic tiling, numbered workspaces, launcher, fullscreen, and move-to-workspace actions.
 - Keep the Umbra visual vocabulary lightweight over RDP: 5px inner gaps, 10px outer gaps, dark surfaces, and a violet focused border.
 - Route Kitty/tmux to workspace 1, IntelliJ to workspace 3, and Thunar to workspace 5 when new windows are created.
-- Preserve Umbra's `Alt+Q` close-focused-window action. The primary workspace controls are `Alt+1…0` on clients that transmit the number row; Forge also creates workspaces 1–10 at session start so the RDP-safe `Alt+Left/Right` and `Alt+Shift+Left/Right` controls remain usable when the iPad drops number chords.
+- Preserve Umbra's `Alt+Q` close-focused-window action, with `Alt+Shift+Q` retained as a compatible alias. `Alt+D` opens Rofi, and `Alt+Enter` opens Kitty. The primary workspace controls are `Alt+1…0` on clients that transmit the number row; Forge also creates workspaces 1–10 at session start so the RDP-safe `Alt+Left/Right` and `Alt+Shift+Left/Right` controls remain usable when the iPad drops number chords.
 - Provide a service mode on `Alt+Shift+;` for reload, floating toggle, layout toggle, and closing the focused window; `Alt+Escape` normalizes the current workspace.
 - Bind only key combinations that the iPad RDP client reliably transmits; do not depend on a function row.
 - Keep configuration under user scope until the profile is validated and ready for Ansible ownership.
@@ -274,8 +274,8 @@ Profile selection and rollback:
 
 ```bash
 ~/.local/bin/forge-desktop-profile status
-~/.local/bin/forge-desktop-profile xfce   # select XFCE for the next login
-~/.local/bin/forge-desktop-profile i3     # select i3 after validation
+~/.local/bin/forge-desktop-profile xfce   # select XFCE recovery desktop for the next login
+~/.local/bin/forge-desktop-profile i3     # restore the current default
 ```
 
 The selector applies at session start. Log out cleanly before reconnecting; a simple RDP disconnect may reattach the existing session.
